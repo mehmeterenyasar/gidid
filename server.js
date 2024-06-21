@@ -148,13 +148,13 @@ bot.onText(/\/update (.+)/, (msg, match) => {
       }
 
       const updateQuery = msg.chat.type === 'private' 
-          ? 'UPDATE project SET p_web_address = ?, p_check_date = ?, p_ban_status = ? WHERE p_web_address = ? AND telegramChatId = ?' 
-          : 'UPDATE project SET p_web_address = ?, p_check_date = ?, p_ban_status = ? WHERE p_web_address = ? AND telegramGroupId = ?';
+          ? 'UPDATE project SET p_web_address = ?, p_update_date = ?, p_check_date = ?, p_ban_status = ? WHERE p_web_address = ? AND telegramChatId = ?' 
+          : 'UPDATE project SET p_web_address = ?, p_update_date = ?, p_check_date = ?, p_ban_status = ? WHERE p_web_address = ? AND telegramGroupId = ?';
 
       const currentTime = Math.floor(Date.now() / 1000); // Unix timestamp
       const banStatus = 2;
 
-      connection.query(updateQuery, [newProjectName, currentTime - 120, banStatus, oldProjectName, chatId], (error, results) => {
+      connection.query(updateQuery, [newProjectName, currentTime, currentTime - 120, banStatus, oldProjectName, chatId], (error, results) => {
           if (error) {
               bot.sendMessage(chatId, translations[lang].dbError + error.message);
               return;
